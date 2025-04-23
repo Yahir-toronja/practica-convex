@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { TablaEstudiantes } from "@/components/layout/tablaestudiantes";
 
 export default function Home() {
