@@ -1,5 +1,5 @@
 import { TablaEstudiantes } from "@/components/layout/tablaestudiantes";
-import { AgregarEstudiante } from "@/components/layout/agregarEstudiantes";
+import { AgregarEstudiante } from "@/components/layout/agregarEstudiantes"
 
 export default function Home() {
   return (
