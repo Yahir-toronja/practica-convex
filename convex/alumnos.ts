@@ -59,3 +59,36 @@ import { alumnos } from "./schema";
       }
     },
   });
+
+export const actualizarAlumnos = mutation({
+    args:{
+      id: v.id("alumnos"),
+      matricula: v.string(),
+      nombre: v.string(),
+      carrera: v.string(),
+      grado: v.number(),
+      correo: v.string(),
+    },
+    handler: async (ctx, args)=>{
+      try{
+        const alumno = await ctx.db.get(args.id);
+        
+        if (!alumno){
+          throw new Error (`No se encontró el alumno con id: ${args.id}`);
+        }
+
+        await ctx.db.patch(args.id, {
+          matricula: args.matricula,
+          nombre: args.nombre,
+          carrera: args.carrera,
+          grado: args.grado,
+          correo: args.correo
+        });
+        console.log(`Alumno ${args.nombre} actualizado`);
+        return {success: true, message: "Alumno actualizado mamaguevo"}
+      }catch (error){
+        console.error(`Error actualizando ${args.nombre}:`, error);
+        throw new Error("Error al actualizar el alumno");
+      }
+    }
+})  

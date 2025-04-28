@@ -53,6 +53,7 @@ export function TablaEstudiantes() {
           <TableHead>Nombre</TableHead>
           <TableHead>Correo</TableHead>
           <TableHead>Grado</TableHead>
+          <TableHead>Acciones</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -89,6 +90,7 @@ export function TablaEstudiantes() {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+          <Button>editar</Button>
         </TableCell>
       </TableRow>
     ))

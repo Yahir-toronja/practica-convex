@@ -12,6 +12,15 @@ export const alumnos = defineTable(
     })
 );
 
+export const maestros = defineTable(
+    v.object({
+        matricula: v.string(),
+        nombre: v.string(),
+        
+    })
+)
+
 export default defineSchema({
     alumnos,
+    maestros,
 });
