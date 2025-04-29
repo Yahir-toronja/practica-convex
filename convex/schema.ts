@@ -9,6 +9,7 @@ export const alumnos = defineTable(
         carrera: v.string(),
         grado: v.number(),
         correo: v.string(),
+        promedio: v.optional(v.number()),
     })
 );
 

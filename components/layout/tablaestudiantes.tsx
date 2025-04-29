@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import {
@@ -23,12 +24,27 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog"
-//import { alumnos } from "@/convex/schema";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Estudiante } from "./estudiante";
+import { Id } from "@/convex/_generated/dataModel";
 
+// Definir el tipo para un estudiante
+interface EstudianteType {
+  _id: Id<"alumnos">;
+  _creationTime: number;
+  matricula: string;
+  nombre: string;
+  carrera: string; // Asegúrate de que este campo exista en tus datos
+  grado: number;
+  correo: string;
+  promedio?: number;
+}
 
 export function TablaEstudiantes() {
   const estudiantes = useQuery(api.alumnos.getAlumnos);
   const eliminarEstuiantes = useMutation(api.alumnos.deleteAlumno);
+  const [estudianteSeleccionado, setEstudianteSeleccionado] = useState<EstudianteType | null>(null);
+  const [dialogoEdicionAbierto, setDialogoEdicionAbierto] = useState(false);
 
   const handlerDeleteEstudiante = async (matricula: string) => {
     try {
@@ -45,6 +61,7 @@ export function TablaEstudiantes() {
   }
 
   return (
+    <>
     <Table>
       <TableCaption>Lista de estudiantes registrados</TableCaption>
       <TableHeader>
@@ -90,13 +107,24 @@ export function TablaEstudiantes() {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-          <Button>editar</Button>
+          <Button onClick={() => {
+            setEstudianteSeleccionado(estudiante);
+            setDialogoEdicionAbierto(true);
+          }}>Editar</Button>
         </TableCell>
       </TableRow>
     ))
   )}
 </TableBody>
-
     </Table>
+    <Dialog open={dialogoEdicionAbierto} onOpenChange={setDialogoEdicionAbierto}>
+      <DialogContent className="sm:max-w-md">
+        <Estudiante 
+          estudiante={estudianteSeleccionado}
+          onClose={() => setDialogoEdicionAbierto(false)}
+        />
+      </DialogContent>
+    </Dialog>
+   </>
   );
 }

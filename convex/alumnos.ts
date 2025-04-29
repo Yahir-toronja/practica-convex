@@ -15,6 +15,23 @@ import { alumnos } from "./schema";
     },
   });
 
+  export const getAlumnoById = query({
+    args: { matricula: v.string() },
+    handler: async (ctx, args) => {
+      const alumno = await ctx.db
+        .query("alumnos")
+        .filter((q) => q.eq(q.field("matricula"), args.matricula))
+        .first();
+      
+      if (!alumno) {
+        // Si quieres manejar el caso cuando no se encuentra el alumno
+        return null; // o puedes lanzar un error
+      }
+      
+      return alumno;
+    }
+  });
+
 
   export const crearAlumno = mutation({
     args:{
@@ -23,6 +40,7 @@ import { alumnos } from "./schema";
       carrera: v.string(),
       grado: v.number(),
       correo: v.string(),
+      promedio: v.number(),
     },
     handler: async (ctx, args)=>{
       await ctx.db.insert("alumnos",{
@@ -30,7 +48,8 @@ import { alumnos } from "./schema";
         nombre: args.nombre,
         carrera: args.carrera,
         grado: args.grado,
-        correo: args.correo
+        correo: args.correo,
+        promedio: args.promedio,
       })
     }
   });
