@@ -30,17 +30,32 @@ import {
   Edit 
 } from 'lucide-react';
 
+// Definimos interfaces para los tipos
+interface Alumno {
+  matricula: string;
+  nombre: string;
+  carrera: string;
+  grado: number;
+  correo: string;
+  promedio: number;
+}
+
+interface DesempenoInfo {
+  texto: string;
+  color: string;
+}
+
 export default function DashboardAlumno() {
   // Obtener la lista de alumnos usando Convex
-  const alumnos = useQuery(api.alumnos.getAlumnos) || [];
-  const [selectedMatricula, setSelectedMatricula] = useState("");
-  const [loading, setLoading] = useState(true);
+  const alumnos = useQuery(api.alumnos.getAlumnos) as Alumno[] | undefined;
+  const [selectedMatricula, setSelectedMatricula] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Obtener los detalles del alumno seleccionado
   const alumno = useQuery(
     api.alumnos.getAlumnoById, 
     selectedMatricula ? { matricula: selectedMatricula } : "skip"
-  );
+  ) as Alumno | undefined;
 
   // Inicializar el primer alumno al cargar los datos
   useEffect(() => {
@@ -54,12 +69,12 @@ export default function DashboardAlumno() {
   }, [alumnos, selectedMatricula]);
 
   // Función para cambiar el alumno seleccionado
-  const handleSelectAlumno = (matricula) => {
+  const handleSelectAlumno = (matricula: string): void => {
     setSelectedMatricula(matricula);
   };
 
   // Obtener el estado de desempeño según el promedio
-  const getDesempenoInfo = (promedio) => {
+  const getDesempenoInfo = (promedio: number): DesempenoInfo => {
     if (promedio >= 9) {
       return { texto: 'Excelente', color: 'bg-green-100 text-green-800' };
     } else if (promedio >= 8) {
@@ -94,7 +109,7 @@ export default function DashboardAlumno() {
   }
 
   // Mostrar mensaje si no hay alumnos
-  if (alumnos.length === 0) {
+  if (!alumnos || alumnos.length === 0) {
     return (
       <div className="flex flex-col w-full max-w-4xl mx-auto p-4">
         <Card>
@@ -212,7 +227,10 @@ export default function DashboardAlumno() {
                         <span>0.0</span>
                         <span>10.0</span>
                       </div>
-                      <Progress value={(alumno.promedio / 10) * 100} className="h-2" />
+                      <Progress 
+                        value={(alumno.promedio / 10) * 100} 
+                        className="h-2" 
+                      />
                     </div>
                     
                     {/* Calificación */}
