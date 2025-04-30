@@ -17,7 +17,8 @@ export const maestros = defineTable(
     v.object({
         matricula: v.string(),
         nombre: v.string(),
-        
+        correo: v.string(),
+        clases: v.string(),        
     })
 )
 

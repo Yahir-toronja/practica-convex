@@ -22,7 +22,12 @@ const formSchema = z.object({
   carrera: z.string().min(1, "La carrera es requerida"),
   grado: z.coerce.number().min(1, "El grado debe ser mayor a 0"),
   correo: z.string().email("Correo electrónico inválido"),
+  // Añadimos el promedio como opcional
+  promedio: z.number().default(0).optional(),
 });
+
+// Definimos el tipo para nuestro formulario basado en el esquema
+type FormValues = z.infer<typeof formSchema>;
 
 export function AgregarEstudiante() {
   const [open, setOpen] = useState(false);
@@ -35,7 +40,7 @@ export function AgregarEstudiante() {
   const agregarEstudiantes = useMutation(api.alumnos.crearAlumno);
 
   // Configuración del formulario con React Hook Form
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       matricula: "",
@@ -43,11 +48,12 @@ export function AgregarEstudiante() {
       carrera: "",
       grado: 1,
       correo: "",
+      promedio: 0,
     },
   });
 
   // Función para manejar el envío del formulario
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: FormValues) => {
     try {
       await agregarEstudiantes({
         matricula: data.matricula,
@@ -55,6 +61,7 @@ export function AgregarEstudiante() {
         carrera: data.carrera,
         grado: data.grado,
         correo: data.correo,
+        promedio: data.promedio || 0, // Aseguramos que siempre haya un valor
       });
 
       // Mostrar notificación de éxito
