@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google"; // O la ruta correcta a tu
 import "./_styles/globals.css";
 import { ConvexClientProvider } from "./providers"; // Asegúrate que la ruta sea correcta
 import { ClerkProvider } from "@clerk/nextjs"; // Asegúrate que está instalado
+import { Navbar } from "@/app/components/layout/navar";
+import { ThemeProvider } from "@/app/components/theme/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,16 +26,29 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return ( // <-- Paréntesis de apertura del return
+  return (
+    // <-- Paréntesis de apertura del return
     // 👇 Este <html> DEBE ser el único elemento aquí dentro
-    
-      <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ClerkProvider>
-          <ConvexClientProvider>
-            {children}
-          </ConvexClientProvider>
-        </ClerkProvider>
-      </div>
-    
+    <html lang="es" suppressHydrationWarning>
+      <body className="min-h-screen bg-background font-sans antialiased">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="relative flex min-h-screen flex-col">
+            <Navbar />
+            <div
+              className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            >
+              <ClerkProvider>
+                <ConvexClientProvider>{children}</ConvexClientProvider>
+              </ClerkProvider>
+            </div>
+          </div>
+        </ThemeProvider>
+      </body>
+    </html>
   ); // <-- Paréntesis de cierre del return
 }

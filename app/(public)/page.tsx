@@ -13,7 +13,7 @@ export default function Home() {
     <main className="container mx-auto py-10">
       <h1 className="text-3xl font-bold mb-6">Seleccion lista</h1>
       <div className="">
-        <Link href={`/(admin)/config/estudiantes/page.tsx`}>
+        <Link href={"/config/estudiantes"}>
           <Card className="">
             <CardHeader>
               <CardTitle>Estudiantes</CardTitle>

@@ -27,6 +27,7 @@ import {
 import { Dialog, DialogContent } from "@/app/components/ui/dialog";
 import { Estudiante } from "./estudiante";
 import { Id } from "@/convex/_generated/dataModel";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 // Definir el tipo para un estudiante
 interface EstudianteType {
@@ -48,10 +49,7 @@ export function TablaEstudiantes() {
   const [estudianteSeleccionado, setEstudianteSeleccionado] = useState<EstudianteType | null>(null);
   const [dialogoEdicionAbierto, setDialogoEdicionAbierto] = useState(false);
 
-  const handlerEstudiante = async (matricula: string)=>{
-    
-  }
-
+ 
   const handlerDeleteEstudiante = async (matricula: string) => {
     try {
       await eliminarEstuiantes({ matricula: matricula });
@@ -113,7 +111,7 @@ export function TablaEstudiantes() {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-          <Button onClick={() => {
+          <Button className="ml-4" onClick={() => {
             setEstudianteSeleccionado(estudiante);
             setDialogoEdicionAbierto(true);
           }}>Editar</Button>
@@ -125,6 +123,7 @@ export function TablaEstudiantes() {
     </Table>
     <Dialog open={dialogoEdicionAbierto} onOpenChange={setDialogoEdicionAbierto}>
       <DialogContent className="sm:max-w-md">
+        <DialogTitle></DialogTitle>
         <Estudiante 
           estudiante={estudianteSeleccionado}
           onClose={() => setDialogoEdicionAbierto(false)}
